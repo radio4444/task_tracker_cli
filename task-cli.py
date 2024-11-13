@@ -19,24 +19,22 @@ if args.command == 'add':
 	task = {
 		'description': args.task_name
 	}
-	# Store all the tasks in the list
-	tasks_list = [task]
 	# Create a file
 	fileName = 'all_tasks.json'
 	if not os.path.exists(fileName):
 		# Create a new JSON file and add the tasks_list in it
 		with open(fileName, 'w') as file:
-			json.dump(tasks_list, file, indent=4)
+			json.dump([task], file, indent=4)
 	else:
 		# Read the file
 		with open(fileName, 'r') as file:
-			tasks_list_json = json.load(file)
+			tasks_list = json.load(file)
 
 		# Append the task in it.
-		tasks_list_json.append(task)
+		tasks_list.append(task)
 
 		# Update the file using the new task list
 		with open(fileName, 'w') as file:
-			json.dump(tasks_list_json, file, indent=4)
+			json.dump(tasks_list, file, indent=4)
 
 	print(f"Output: Task added successfully: {tasks_list}")
