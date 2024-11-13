@@ -1,4 +1,6 @@
 import argparse
+import json
+
 
 # Create main parser
 parser = argparse.ArgumentParser(description="Basic Examples of ArgParse.")
@@ -27,3 +29,14 @@ if args.command == 'choice':
 	if args.verbose:
 		print("Verbose mode is on")
 
+python_obj1 = {"name": "Bob", "age": 30}
+python_obj2 = {"name": "Alexa", "age": 29}
+
+with open("json_output.json", 'w') as file:
+	json.dump(python_obj1, file, indent=4)
+
+with open("json_output.json", 'r') as file:
+	print(json.load(file))
+
+json_string = json.dumps(python_obj2, indent=4)
+print(json_string)
