@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+from datetime import datetime
 # Create a main parser
 main_parsers = argparse.ArgumentParser(description="Task Tracker using CLI")
 
@@ -17,24 +18,29 @@ args = main_parsers.parse_args()
 if args.command == 'add':
 	# Create a task:
 	task = {
-		'description': args.task_name
+		'description': args.task_name,
+		'status': 'todo',
+		'createAt': datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
 	}
 	# Create a file
 	fileName = 'all_tasks.json'
+	# Check if the file does not exist
 	if not os.path.exists(fileName):
 		# Create a new JSON file and add the tasks_list in it
 		with open(fileName, 'w') as file:
 			json.dump([task], file, indent=4)
+
+		print(f"Output: Task added successfully: {task}")
 	else:
-		# Read the file
+		# Read the JSON file and convert to python object
 		with open(fileName, 'r') as file:
 			tasks_list = json.load(file)
 
-		# Append the task in it.
+		# Append the task in tasks_list
 		tasks_list.append(task)
 
-		# Update the file using the new task list
+		# Update the file using the new tasks_list
 		with open(fileName, 'w') as file:
 			json.dump(tasks_list, file, indent=4)
 
-	print(f"Output: Task added successfully: {tasks_list}")
+		print(f"Output: Task added successfully: {tasks_list}")
