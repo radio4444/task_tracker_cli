@@ -26,6 +26,7 @@ fileName = 'all_tasks.json'
 if args.command == 'add':
 	# Create a task:
 	task = {
+		'id': 1,
 		'description': args.task_name,
 		'status': 'todo',
 		'createAt': datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
@@ -42,6 +43,8 @@ if args.command == 'add':
 		with open(fileName, 'r') as file:
 			tasks_list = json.load(file)
 
+		# Update the task id
+		task['id'] = tasks_list[-1]['id'] + 1
 		# Append the task in tasks_list
 		tasks_list.append(task)
 
@@ -53,6 +56,6 @@ if args.command == 'add':
 if args.command == 'list':
 	with open(fileName, 'r') as file:
 		tasks_lists = json.load(file)
-	print(f"{'Description':<20}{'Status':^10}{'Created At':>18}")
+	print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>18}")
 	for task in tasks_lists:
-		print(f"{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+		print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
