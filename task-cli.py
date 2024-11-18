@@ -16,6 +16,10 @@ add_task_parser.add_argument('task_name', help="Name of the tasks")
 # Create "list" task command
 list_task_parser = subparsers.add_parser('list', help="Listing all tasks")
 
+# Create "delete" task command
+delete_task_parser = subparsers.add_parser('delete', help="Delete a task")
+delete_id_parser = delete_task_parser.add_argument('id', type=int, help='Delete a task by Id')
+
 # Parse the argument
 args = main_parsers.parse_args()
 
@@ -41,16 +45,16 @@ if args.command == 'add':
 	else:
 		# Read the JSON file and convert to python object
 		with open(fileName, 'r') as file:
-			tasks_list = json.load(file)
+			tasks_lists = json.load(file)
 
 		# Update the task id
-		task['id'] = tasks_list[-1]['id'] + 1
+		task['id'] = tasks_lists[-1]['id'] + 1
 		# Append the task in tasks_list
-		tasks_list.append(task)
+		tasks_lists.append(task)
 
 		# Update the file using the new tasks_list
 		with open(fileName, 'w') as file:
-			json.dump(tasks_list, file, indent=4)
+			json.dump(tasks_lists, file, indent=4)
 
 # Check if the command is 'list'
 if args.command == 'list':
@@ -59,3 +63,18 @@ if args.command == 'list':
 	print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>18}")
 	for task in tasks_lists:
 		print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+
+# Check if the command is 'delete'
+if args.command == 'delete':
+	# Read the JSON file
+	with open(fileName, 'r') as file:
+		tasks_lists = json.load(file)
+	# Traverse the tasks_list
+	for task in tasks_lists:
+		# check if the delete id match with task id
+		if args.id == task['id']:
+			tasks_lists.remove(task)  # remove the task from the list
+	# Update the JSON file using the tasks_lists
+	with open(fileName, 'w') as file:
+		json.dump(tasks_lists, file, indent=4)
+
