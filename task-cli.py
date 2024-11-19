@@ -11,14 +11,19 @@ subparsers = main_parsers.add_subparsers(dest="command")
 
 # Create "add" task command
 add_task_parser = subparsers.add_parser('add', help="Add a task")
-add_task_parser.add_argument('task_name', help="Name of the tasks")
+add_task_parser.add_argument('add_task_name', help="Name of the tasks")
 
 # Create "list" task command
 list_task_parser = subparsers.add_parser('list', help="Listing all tasks")
 
 # Create "delete" task command
 delete_task_parser = subparsers.add_parser('delete', help="Delete a task")
-delete_id_parser = delete_task_parser.add_argument('id', type=int, help='Delete a task by Id')
+delete_id_parser = delete_task_parser.add_argument('delete_id', type=int, help='Delete a task by Id')
+
+# Create "update" task command
+update_task_parser = subparsers.add_parser('update', help="Update the task name")
+update_id_parser = update_task_parser.add_argument('update_id', type=int, help='Update task by id')
+update_name_parser = update_task_parser.add_argument('update_task_name', help='New task name')
 
 # Parse the argument
 args = main_parsers.parse_args()
@@ -31,7 +36,7 @@ if args.command == 'add':
 	# Create a task:
 	task = {
 		'id': 1,
-		'description': args.task_name,
+		'description': args.add_task_name,
 		'status': 'todo',
 		'createAt': datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
 	}
@@ -72,9 +77,23 @@ if args.command == 'delete':
 	# Traverse the tasks_list
 	for task in tasks_lists:
 		# check if the delete id match with task id
-		if args.id == task['id']:
+		if args.delete_id == task['id']:
 			tasks_lists.remove(task)  # remove the task from the list
 	# Update the JSON file using the tasks_lists
 	with open(fileName, 'w') as file:
 		json.dump(tasks_lists, file, indent=4)
 
+# Check if the command is 'update'
+if args.command == 'update':
+	# Read the JSON file
+	with open(fileName, 'r') as file:
+		tasks_lists = json.load(file)  # Store converted python list in tasks_lists
+	# Traverse the tasks_lists
+	for task in tasks_lists:
+		# Check if the update id match with task id in task list
+		if args.update_id == task['id']:
+			task['description'] = args.update_task_name  # Update the task name
+
+	# Update the JSON file using this new tasks_lists
+	with open(fileName, 'w') as file:
+		json.dump(tasks_lists, file, indent=4)
