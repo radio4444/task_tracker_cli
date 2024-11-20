@@ -25,6 +25,11 @@ update_task_parser = subparsers.add_parser('update', help="Update the task name"
 update_id_parser = update_task_parser.add_argument('update_id', type=int, help='Update task by id')
 update_name_parser = update_task_parser.add_argument('update_task_name', help='New task name')
 
+# Create "mark-in-progress" task command
+mark_in_progress_parser = subparsers.add_parser('mark-in-progress', help='Mark as: in-progress')
+mark_in_progress_id_parser = mark_in_progress_parser.add_argument('mark_in_progress_id', type=int,
+                                                                  help="Mark the progress by id")
+
 # Parse the argument
 args = main_parsers.parse_args()
 
@@ -95,5 +100,19 @@ if args.command == 'update':
 			task['description'] = args.update_task_name  # Update the task name
 
 	# Update the JSON file using this new tasks_lists
+	with open(fileName, 'w') as file:
+		json.dump(tasks_lists, file, indent=4)
+
+# Check if the command is 'mark-in-progress'
+if args.command == 'mark-in-progress':
+	# Read the JSON file and convert it to python list
+	with open(fileName, 'r') as file:
+		tasks_lists = json.load(file)
+	# Traverse the list
+	for task in tasks_lists:
+		# Check if the mark_in_progress_id match with the task id
+		if args.mark_in_progress_id == task['id']:
+			task['status'] = 'in-progress'  # update the task's statue: in-progress
+	# Update the JSON file using the new tasks_lists
 	with open(fileName, 'w') as file:
 		json.dump(tasks_lists, file, indent=4)
