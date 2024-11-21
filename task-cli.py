@@ -15,24 +15,25 @@ add_task_parser.add_argument('add_task_name', help="Name of the tasks")
 
 # Create "list" task command
 list_task_parser = subparsers.add_parser('list', help="Listing all tasks")
+list_task_parser.add_argument('list_status', choices=['todo'], nargs='?', help='Listing by status')
 
 # Create "delete" task command
 delete_task_parser = subparsers.add_parser('delete', help="Delete a task")
-delete_id_parser = delete_task_parser.add_argument('delete_id', type=int, help='Delete a task by Id')
+delete_task_parser.add_argument('delete_id', type=int, help='Delete a task by Id')
 
 # Create "update" task command
 update_task_parser = subparsers.add_parser('update', help="Update the task name")
-update_id_parser = update_task_parser.add_argument('update_id', type=int, help='Update task by id')
-update_name_parser = update_task_parser.add_argument('update_task_name', help='New task name')
+update_task_parser.add_argument('update_id', type=int, help='Update task by id')
+update_task_parser.add_argument('update_task_name', help='New task name')
 
 # Create "mark-in-progress" task command
 mark_in_progress_parser = subparsers.add_parser('mark-in-progress', help='Mark as: in-progress')
-mark_in_progress_id_parser = mark_in_progress_parser.add_argument('mark_in_progress_id', type=int,
-                                                                  help="Mark the in-progress by id")
+mark_in_progress_parser.add_argument('mark_in_progress_id', type=int,
+                                     help="Mark the in-progress by id")
 
 # Create "mark-done" task command
 mark_done_parser = subparsers.add_parser('mark-done', help='Mark as: done')
-mark_done_id_parser = mark_done_parser.add_argument('mark_done_id', type=int, help='Mark done by id')
+mark_done_parser.add_argument('mark_done_id', type=int, help='Mark done by id')
 
 # Parse the argument
 args = main_parsers.parse_args()
@@ -72,11 +73,19 @@ if args.command == 'add':
 
 # Check if the command is 'list'
 if args.command == 'list':
+	# Read the JSON file and converted to python list
 	with open(fileName, 'r') as file:
 		tasks_lists = json.load(file)
 	print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>18}")
-	for task in tasks_lists:
-		print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+	# check if the list choice set to to-do
+	if args.list_status == 'todo':
+		for task in tasks_lists:
+			if args.list_status == task['status']:  # Only display to-do tasks
+				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+
+	else:
+		for task in tasks_lists:  # Display all the tasks
+			print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
 
 # Check if the command is 'delete'
 if args.command == 'delete':
