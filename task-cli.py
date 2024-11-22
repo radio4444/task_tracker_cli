@@ -15,7 +15,7 @@ add_task_parser.add_argument('add_task_name', help="Name of the tasks")
 
 # Create "list" task command
 list_task_parser = subparsers.add_parser('list', help="Listing all tasks")
-list_task_parser.add_argument('list_status', choices=['todo'], nargs='?', help='Listing by status')
+list_task_parser.add_argument('list_status', choices=['todo', 'in-progress'], nargs='?', help='Listing by status')
 
 # Create "delete" task command
 delete_task_parser = subparsers.add_parser('delete', help="Delete a task")
@@ -77,12 +77,17 @@ if args.command == 'list':
 	with open(fileName, 'r') as file:
 		tasks_lists = json.load(file)
 	print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>18}")
-	# check if the list choice set to to-do
+	# check if the list choice set to: to-do
 	if args.list_status == 'todo':
 		for task in tasks_lists:
 			if args.list_status == task['status']:  # Only display to-do tasks
 				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
 
+	# Check if the list choice set to: in-progress
+	if args.list_status == 'in-progress':
+		for task in tasks_lists:
+			if args.list_status == task['status']: # Only display tasks that are in-progress
+				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
 	else:
 		for task in tasks_lists:  # Display all the tasks
 			print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
