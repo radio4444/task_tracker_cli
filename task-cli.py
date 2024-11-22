@@ -15,7 +15,7 @@ add_task_parser.add_argument('add_task_name', help="Name of the tasks")
 
 # Create "list" task command
 list_task_parser = subparsers.add_parser('list', help="Listing all tasks")
-list_task_parser.add_argument('list_status', choices=['todo', 'in-progress'], nargs='?', help='Listing by status')
+list_task_parser.add_argument('list_status', choices=['todo', 'in-progress', 'done'], nargs='?', help='Listing by status')
 
 # Create "delete" task command
 delete_task_parser = subparsers.add_parser('delete', help="Delete a task")
@@ -87,6 +87,12 @@ if args.command == 'list':
 	if args.list_status == 'in-progress':
 		for task in tasks_lists:
 			if args.list_status == task['status']: # Only display tasks that are in-progress
+				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+
+	# Check if the list choice set to: done
+	if args.list_status == 'done':
+		for task in tasks_lists:
+			if args.list_status == task['status']:
 				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
 	else:
 		for task in tasks_lists:  # Display all the tasks
