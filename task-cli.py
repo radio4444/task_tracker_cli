@@ -51,8 +51,8 @@ if args.command == 'add':
 		'createAt': datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
 	}
 
-	# Check if the file does not exist
-	if not os.path.exists(fileName):
+	# Check if the file does not exist or no content in the file
+	if not os.path.exists(fileName) or os.path.getsize(fileName) == 0:
 		# Create a new JSON file and add the tasks_list in it
 		with open(fileName, 'w') as file:
 			json.dump([task], file, indent=4)
