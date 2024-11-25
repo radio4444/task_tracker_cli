@@ -76,7 +76,7 @@ if args.command == 'list':
 	# Read the JSON file and converted to python list
 	with open(fileName, 'r') as file:
 		tasks_lists = json.load(file)
-	print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>18}")
+	print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>25}")
 	# check if the list choice set to: to-do
 	if args.list_status == 'todo':
 		for task in tasks_lists:
