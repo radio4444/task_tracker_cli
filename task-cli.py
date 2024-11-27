@@ -71,6 +71,7 @@ if args.command == 'add':
 		# Update the file using the new tasks_list
 		with open(fileName, 'w') as file:
 			json.dump(tasks_lists, file, indent=4)
+		print(f"Task added successfully (ID: {task['id']})")
 
 # Check if the command is 'list'
 if args.command == 'list':
