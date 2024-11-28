@@ -85,27 +85,27 @@ if args.command == 'list':
 		# Read the JSON file and converted to python list
 		with open(fileName, 'r') as file:
 			tasks_lists = json.load(file)
-		print(f"{'Id':<5}{'Description':<20}{'Status':^10}{'Created At':>25}")
+		print(f"{'Id':<5}{'Description':<20}{'Status':^15}{'Created At':>23}")
 		# check if the list choice set to: to-do
 		if args.list_status == 'todo':
 			for task in tasks_lists:
 				if args.list_status == task['status']:  # Only display to-do tasks
-					print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+					print(f"{task['id']:<5}{task['description']:<20}{task['status']:^15}{task['createAt']:>30}")
 
 		# Check if the list choice set to: in-progress
-		if args.list_status == 'in-progress':
+		elif args.list_status == 'in-progress':
 			for task in tasks_lists:
 				if args.list_status == task['status']:  # Only display tasks that are in-progress
-					print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+					print(f"{task['id']:<5}{task['description']:<20}{task['status']:^15}{task['createAt']:>30}")
 
 		# Check if the list choice set to: done
-		if args.list_status == 'done':
+		elif args.list_status == 'done':
 			for task in tasks_lists:
 				if args.list_status == task['status']:
-					print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+					print(f"{task['id']:<5}{task['description']:<20}{task['status']:^15}{task['createAt']:>30}")
 		else:
 			for task in tasks_lists:  # Display all the tasks
-				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^10}{task['createAt']:>30}")
+				print(f"{task['id']:<5}{task['description']:<20}{task['status']:^15}{task['createAt']:>30}")
 
 # Check if the command is 'delete'
 if args.command == 'delete':
